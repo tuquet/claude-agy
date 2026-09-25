@@ -93,10 +93,10 @@ for ($i = 0; $i -lt $UserArgs.Length; $i++) {
     }
 }
 
-# Sync Antigravity token
-$syncArgs = @{ AppDir = $AppDir }
+# Sync Antigravity token silently
+$syncArgs = @{ AppDir = $AppDir; Quiet = $true }
 if ($CustomTokenPath) { $syncArgs["TokenPath"] = $CustomTokenPath }
-& "$AppDir\scripts\sync-token.ps1" @syncArgs | Out-Null
+& "$AppDir\scripts\sync-token.ps1" @syncArgs *>$null
 
 if (-not $ModelSpecified -and $DefaultModel) {
     $ProcessedArgs.Insert(0, $DefaultModel)

@@ -214,14 +214,18 @@ const isDirectRun = process.argv[1] && (
 );
 
 if (isDirectRun) {
+  const isQuiet = process.argv.includes('--quiet') || process.argv.includes('-q');
+  const nonFlagArgs = process.argv.slice(2).filter(a => !a.startsWith('-'));
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-  const appDirArg = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(scriptDir, '..');
-  const customPathArg = process.argv[3] || null;
+  const appDirArg = nonFlagArgs[0] ? path.resolve(nonFlagArgs[0]) : path.resolve(scriptDir, '..');
+  const customPathArg = nonFlagArgs[1] || null;
   const targetDataDir = path.join(appDirArg, 'data');
   const result = resolveAntigravityToken(targetDataDir, customPathArg);
-  if (result.success) {
-    console.log(`[OK] Synced Antigravity OAuth token (${result.email}) from ${result.source}`);
-  } else {
-    console.log(`[INFO] ${result.error}`);
+  if (!isQuiet) {
+    if (result.success) {
+      console.log(`[OK] Antigravity token synced (${result.email})`);
+    } else {
+      console.log(`[WARN] ${result.error}`);
+    }
   }
 }
