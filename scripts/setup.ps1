@@ -409,8 +409,8 @@ if ($isUpdateCommand) {
 
     $isScoop = ($AppDir -like "*\scoop\apps\*")
     if ($isScoop) {
-        Write-Host ">> Updating Scoop bucket and claude-agy package..." -ForegroundColor Cyan
-        try { & scoop update tuquet } catch {}
+        Write-Host ">> Updating Scoop and claude-agy package..." -ForegroundColor Cyan
+        try { & scoop update } catch {}
         try { & scoop update claude-agy } catch {}
     } else {
         Write-Host ">> Updating Claude-Agy from GitHub..." -ForegroundColor Cyan
