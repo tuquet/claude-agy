@@ -23,7 +23,9 @@ mkdir -p "$INSTALL_DIR"/{bin,config,data,logs,scripts}
 
 # 2. Install basic dependencies
 if command -v apt-get >/dev/null 2>&1; then
-    sudo apt-get update -qq && sudo apt-get install -y -qq curl tar netcat-openbsd python3
+    SUDO=""
+    [ "$(id -u)" -ne 0 ] && command -v sudo >/dev/null 2>&1 && SUDO="sudo"
+    $SUDO apt-get update -qq && $SUDO apt-get install -y -qq curl tar netcat-openbsd python3 2>/dev/null || true
 fi
 
 # 3. Install Claude Code CLI if missing

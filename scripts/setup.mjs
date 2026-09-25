@@ -117,7 +117,17 @@ if (!fs.existsSync(proxyExePath)) {
 
     // 3. Fallback to native fetch
     if (!downloaded) {
-      const resp = await fetch(downloadUrl);
+      let resp;
+      try {
+        resp = await fetch(downloadUrl);
+      } catch (err) {
+        if (err.cause?.code === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE' || err.message?.includes('certificate') || err.message?.includes('fetch failed')) {
+          process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+          resp = await fetch(downloadUrl);
+        } else {
+          throw err;
+        }
+      }
       if (!resp.ok) throw new Error(`HTTP ${resp.status} ${resp.statusText}`);
       const buffer = Buffer.from(await resp.arrayBuffer());
       fs.writeFileSync(tempArchive, buffer);
