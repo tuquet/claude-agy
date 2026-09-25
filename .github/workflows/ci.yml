@@ -1,0 +1,40 @@
+name: CI (Script Syntax Validation)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate-scripts:
+    name: Validate Scripts & Strict ASCII
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate PowerShell Strict ASCII
+        shell: pwsh
+        run: |
+          $psFiles = Get-ChildItem -Recurse -Filter "*.ps1"
+          $hasError = $false
+          foreach ($file in $psFiles) {
+            $lines = Get-Content $file.FullName
+            for ($i = 0; $i -lt $lines.Length; $i++) {
+              if ($lines[$i] -match '[^\x00-\x7F]') {
+                Write-Error "[FAIL] $($file.Name):$($i+1) contains non-ASCII characters!"
+                $hasError = $true
+              }
+            }
+          }
+          if ($hasError) { exit 1 }
+          Write-Host "[OK] All PowerShell scripts are 100% strict ASCII." -ForegroundColor Green
+
+      - name: Validate Node.js Syntax
+        shell: pwsh
+        run: |
+          node -c setup.mjs
+          node -c scripts/setup.mjs
+          Write-Host "[OK] Node.js scripts syntax valid." -ForegroundColor Green

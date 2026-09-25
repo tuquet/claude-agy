@@ -1,0 +1,21 @@
+# Logs
+logs/
+*.log
+
+# Runtime data & secrets
+data/
+*.token
+*.json
+!package.json
+!tsconfig.json
+
+# Binaries
+bin/
+*.exe
+
+# Node dependencies
+node_modules/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
