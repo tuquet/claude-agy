@@ -33,7 +33,7 @@ flowchart TD
 
 - **Zero API Token Cost**: Utilizes your existing Google Antigravity OAuth quota directly.
 - **On-Demand Proxy Lifecycle**: Starts the reverse proxy automatically on port `8318` when you run `claude-agy`, and terminates the process when you exit (0 MB RAM overhead when idle).
-- **Dynamic Multi-Source Token Resolver**: Automatically detects OAuth tokens from Antigravity CLI (`antigravity-cli`), Antigravity IDE (`jetski-standalone-oauth-token`), and OAuth credentials (`oauth_creds.json`).
+- **Dynamic Multi-Source Token Scanner**: Automatically discovers and validates OAuth tokens across `~/.gemini/` subdirectories, Antigravity IDE (`jetski-standalone-oauth-token`, `%APPDATA%\Antigravity*`), and OAuth credentials (`oauth_creds.json`). Supports custom paths via CLI flag (`--token-path`), env var (`ANTIGRAVITY_TOKEN_PATH`), or `config/settings.env`.
 - **Dynamic Model Discovery (`/model`)**: Query and switch models on the fly (Sonnet 3.7 / 4.6, Opus Thinking, Gemini 3.8 Flash High) without maintaining static alias tables.
 - **Root & Sandbox Permission Bypass**: Seamless headless execution (`IS_SANDBOX=1` and automated `.claude.json` trust acceptance) for uninterrupted developer workflows.
 - **Strict ASCII & Cross-Platform Invariance**: Pure PowerShell 5.1/7+, Node.js, and Bash implementations with zero Windows-1252 ANSI encoding pitfalls.
@@ -113,7 +113,37 @@ claude-agy -p "Write an async HTTP client in Rust"
 
 # Specify a model explicitly
 claude-agy --model claude-opus-4-6-thinking
+
+# Specify a custom token file directly
+claude-agy --token-path "C:\path\to\custom-token.json"
 ```
+
+---
+
+## 🔑 Token Discovery & Configuration
+
+Claude-Agy automatically locates and syncs your Antigravity OAuth credentials using a prioritized 5-tier discovery hierarchy:
+
+1. **CLI Argument (`--token-path` / `-t`)**:
+   ```bash
+   claude-agy --token-path /custom/path/oauth_token.json
+   ```
+2. **Environment Variable (`ANTIGRAVITY_TOKEN_PATH` or `GEMINI_TOKEN_PATH`)**:
+   ```powershell
+   $env:ANTIGRAVITY_TOKEN_PATH = "C:\Tokens\my-antigravity-token.json"
+   claude-agy
+   ```
+3. **Configuration File (`config/settings.env`)**:
+   ```text
+   ANTIGRAVITY_TOKEN_PATH="/custom/path/oauth_token.json"
+   ```
+4. **Standard Candidate Paths**:
+   - `~/.gemini/jetski-standalone-oauth-token` (Antigravity IDE)
+   - `~/.gemini/oauth_creds.json`
+   - `~/.gemini/antigravity-cli/antigravity-oauth-token`
+   - `%APPDATA%\Antigravity\oauth_creds.json` / `~/.config/Antigravity/oauth_creds.json`
+5. **Dynamic Directory Scanner**:
+   - Automatically searches subdirectories of `~/.gemini` (skipping heavy cache, brain, and history directories) and system application data folders for valid OAuth token JSON payloads.
 
 ---
 
