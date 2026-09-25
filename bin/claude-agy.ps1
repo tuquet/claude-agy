@@ -2,7 +2,7 @@
 .SYNOPSIS
     Primary launcher for Claude-Agy on Windows.
 #>
-param([Parameter(ValueFromRemainingArguments = $true)][string[]]$UserArgs)
+$UserArgs = $args
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $AppDir = [System.IO.Path]::GetFullPath((Join-Path $ScriptDir ".."))
