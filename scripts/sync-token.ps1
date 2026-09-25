@@ -5,7 +5,8 @@
 [CmdletBinding()]
 param(
     [string]$AppDir = "$PSScriptRoot\..",
-    [string]$TokenPath = $null
+    [string]$TokenPath = $null,
+    [switch]$Quiet
 )
 
 $AppDir = [System.IO.Path]::GetFullPath($AppDir)
@@ -191,12 +192,9 @@ $GeminiTokenPath = Find-AntigravityToken $TokenPath $AppDir
 $AuthFile = Join-Path $AppDir "data\antigravity-auth.json"
 
 if (-not $GeminiTokenPath) {
-    Write-Host "[INFO] No Antigravity OAuth token detected." -ForegroundColor Yellow
-    Write-Host "       Searched: ~/.gemini, AppData config dirs, and env variables." -ForegroundColor Gray
-    Write-Host "       To configure a custom token path, you can:" -ForegroundColor Cyan
-    Write-Host "         1. Run: claude-agy --token-path <path-to-token-file>" -ForegroundColor White
-    Write-Host "         2. Set env var: `$env:ANTIGRAVITY_TOKEN_PATH = '<path-to-token-file>'" -ForegroundColor White
-    Write-Host "         3. Add ANTIGRAVITY_TOKEN_PATH='<path>' to config\settings.env" -ForegroundColor White
+    if (-not $Quiet) {
+        Write-Host "[WARN] No Antigravity OAuth token detected. Login or run with --token-path." -ForegroundColor Yellow
+    }
     exit 0
 }
 
@@ -244,7 +242,11 @@ try {
     if (-not (Test-Path $dataDir)) { New-Item -ItemType Directory -Path $dataDir -Force | Out-Null }
 
     $authObj | ConvertTo-Json -Depth 5 | Set-Content -Path $AuthFile -Encoding ASCII
-    Write-Host "[OK] Synced Antigravity OAuth token ($email) from $GeminiTokenPath" -ForegroundColor Green
+    if (-not $Quiet) {
+        Write-Host "[OK] Antigravity token synced ($email)" -ForegroundColor Green
+    }
 } catch {
-    Write-Host "[WARN] Could not sync token: $_" -ForegroundColor Yellow
+    if (-not $Quiet) {
+        Write-Host "[WARN] Could not sync token: $_" -ForegroundColor Yellow
+    }
 }

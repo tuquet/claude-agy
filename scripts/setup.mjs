@@ -262,9 +262,9 @@ if (fs.existsSync(syncModulePath)) {
     const { resolveAntigravityToken } = await import(syncModulePath);
     const result = resolveAntigravityToken(dataDir, process.env.ANTIGRAVITY_TOKEN_PATH || null);
     if (result.success) {
-      console.log(`  \x1b[32m-> [OK] Synced token (${result.email}) from ${result.source}\x1b[0m`);
+      console.log(`  \x1b[32m-> [OK] Antigravity token synced (${result.email})\x1b[0m`);
     } else {
-      console.log(`  \x1b[33m-> [NOTE] ${result.error}\x1b[0m`);
+      console.log(`  \x1b[33m-> [WARN] ${result.error}\x1b[0m`);
     }
   } catch (err) {
     console.log(`  \x1b[33m-> Token sync warning: ${err.message}\x1b[0m`);
