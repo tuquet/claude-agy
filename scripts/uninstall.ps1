@@ -3,7 +3,7 @@
     Completely uninstalls Claude-Agy from Windows.
 #>
 param(
-    [string]$TargetDir = "$env:USERPROFILE\claude-agy"
+    [string]$TargetDir = $(if (Test-Path "$PSScriptRoot\bin") { $PSScriptRoot } elseif (Test-Path "$PSScriptRoot\..\bin") { [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..")) } else { "$env:USERPROFILE\claude-agy" })
 )
 
 Write-Host "============================================================" -ForegroundColor Cyan

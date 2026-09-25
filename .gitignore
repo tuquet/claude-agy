@@ -10,7 +10,6 @@ data/
 !tsconfig.json
 
 # Binaries
-bin/
 *.exe
 
 # Node dependencies

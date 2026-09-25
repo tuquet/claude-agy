@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+set -e
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+done
+APP_DIR="$(cd -P "$(dirname "$SOURCE")/.." >/dev/null 2>&1 && pwd)"
+
+PORT=8318
+AUTO_BYPASS_PERMISSIONS=true
+DEFAULT_MODEL=""
+CUSTOM_TOKEN_PATH=""
+[ -f "$APP_DIR/config/settings.env" ] && source "$APP_DIR/config/settings.env"
+[ -n "$ANTIGRAVITY_TOKEN_PATH" ] && CUSTOM_TOKEN_PATH="$ANTIGRAVITY_TOKEN_PATH"
+
+if [ "$1" = "update" ] || [ "$1" = "upgrade" ] || [ "$1" = "--update" ]; then
+  echo "============================================================"
+  echo " Updating Claude-Agy & Claude Code CLI..."
+  echo "============================================================"
+  echo ">> Updating Claude-Agy from GitHub..."
+  curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.sh | bash
+  echo -e "\n>> Updating Claude Code CLI..."
+  claude update || true
+  echo -e "\n>> Re-synchronizing Antigravity token..."
+  python3 "$APP_DIR/scripts/sync-token.py" "$APP_DIR" >/dev/null 2>&1 || true
+  echo -e "\n>> [SUCCESS] Claude-Agy is fully up to date!"
+  exit 0
+fi
+
+ENABLE_BYPASS=false
+[ "$AUTO_BYPASS_PERMISSIONS" = "true" ] && ENABLE_BYPASS=true
+
+MODEL_SPECIFIED=false
+ARGS=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --bypass|-y) ENABLE_BYPASS=true; shift ;;
+    --no-bypass) ENABLE_BYPASS=false; shift ;;
+    --dangerously-skip-permissions) ENABLE_BYPASS=true; shift ;;
+    --token-path|-t)
+      if [[ -n "$2" ]]; then CUSTOM_TOKEN_PATH="$2"; shift 2; else shift; fi ;;
+    --token-path=*)
+      CUSTOM_TOKEN_PATH="${1#*=}"; shift ;;
+    --model|-m)
+      MODEL_SPECIFIED=true; ARGS+=("$1" "$2"); shift 2 ;;
+    --model=*)
+      MODEL_SPECIFIED=true; ARGS+=("$1"); shift ;;
+    *)
+      ARGS+=("$1"); shift ;;
+  esac
+done
+
+mkdir -p "$APP_DIR/logs"
+python3 "$APP_DIR/scripts/sync-token.py" "$APP_DIR" "$CUSTOM_TOKEN_PATH" >/dev/null 2>&1 || true
+
+if [ "$MODEL_SPECIFIED" = false ] && [ -n "$DEFAULT_MODEL" ]; then
+  ARGS=("--model" "$DEFAULT_MODEL" "${ARGS[@]}")
+fi
+
+if [ "$ENABLE_BYPASS" = true ]; then
+  export IS_SANDBOX="1"
+  HAS_FLAG=false
+  for a in "${ARGS[@]}"; do [ "$a" = "--dangerously-skip-permissions" ] && HAS_FLAG=true && break; done
+  [ "$HAS_FLAG" = false ] && ARGS=("--dangerously-skip-permissions" "${ARGS[@]}")
+fi
+
+PROXY_PID=""
+STARTED_PROXY=false
+if ! nc -z 127.0.0.1 "$PORT" 2>/dev/null; then
+  "$APP_DIR/bin/cli-proxy-api" --config "$APP_DIR/config/config.yaml" > "$APP_DIR/logs/proxy.log" 2>&1 &
+  PROXY_PID=$!
+  STARTED_PROXY=true
+  trap 'if [ "$STARTED_PROXY" = true ] && [ -n "$PROXY_PID" ]; then kill "$PROXY_PID" 2>/dev/null; wait "$PROXY_PID" 2>/dev/null || true; fi' EXIT INT TERM
+  local_retries=0
+  while ! nc -z 127.0.0.1 "$PORT" 2>/dev/null; do
+    sleep 0.2
+    local_retries=$((local_retries + 1))
+    if [ $local_retries -gt 15 ]; then
+      echo ">> [ERROR] Failed to start Proxy. Log: $APP_DIR/logs/proxy.log"
+      exit 1
+    fi
+  done
+fi
+
+ANTHROPIC_BASE_URL="http://127.0.0.1:$PORT" \
+ANTHROPIC_AUTH_TOKEN="sk-personal-claude-token" \
+CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY="1" \
+claude "${ARGS[@]}"
+EXIT_CODE=$?
+
+if [ "$STARTED_PROXY" = true ] && [ -n "$PROXY_PID" ]; then
+  kill "$PROXY_PID" 2>/dev/null
+  wait "$PROXY_PID" 2>/dev/null || true
+fi
+trap - EXIT INT TERM
+exit $EXIT_CODE

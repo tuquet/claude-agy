@@ -156,7 +156,10 @@ Claude-Agy automatically locates and syncs your Antigravity OAuth credentials us
 
 ```text
 ├── bin/
-│   ├── claude-agy            # Primary CLI launcher (bash / ps1 & cmd)
+│   ├── claude-agy            # Linux / macOS Bash launcher
+│   ├── claude-agy.ps1        # Windows PowerShell launcher
+│   ├── claude-agy.cmd        # Windows CMD wrapper
+│   ├── claude-agy.mjs        # Universal Node.js launcher
 │   └── cli-proxy-api         # Native reverse proxy binary
 ├── config/
 │   ├── config.yaml           # Minimalist proxy configuration
@@ -166,11 +169,15 @@ Claude-Agy automatically locates and syncs your Antigravity OAuth credentials us
 ├── logs/
 │   └── proxy.log             # Proxy logs
 ├── scripts/
-│   ├── setup.mjs             # Universal Node.js setup
-│   ├── setup.ps1             # Windows PowerShell setup
-│   ├── setup.sh              # Linux / macOS setup
+│   ├── setup.mjs             # Universal Node.js setup orchestrator
+│   ├── setup.ps1             # Windows PowerShell setup orchestrator
+│   ├── setup.sh              # Linux / macOS setup orchestrator
+│   ├── sync-token.mjs        # Node.js token scanner
+│   ├── sync-token.ps1        # PowerShell token scanner
+│   ├── sync-token.py         # Python token scanner
 │   ├── uninstall.ps1         # Windows uninstaller
 │   └── uninstall.sh          # Linux / macOS uninstaller
+├── package.json
 └── README.md
 ```
 
