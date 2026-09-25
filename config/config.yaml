@@ -1,0 +1,24 @@
+host: "127.0.0.1"
+port: 8318
+auth-dir: ""
+api-keys:
+  - "sk-personal-claude-token"
+remote-management:
+  disable-control-panel: true
+quota-exceeded:
+  switch-project: true
+  antigravity-credits: true
+debug: false
+
+antigravity:
+  sensitive-words:
+    - "system-conventions"
+    - "system_conventions"
+    - "system-directive"
+    - "system_directive"
+    - "Claude Agent SDK"
+    - "Claude Code"
+    - "Anthropic"
+    - "claude"
+    - "API"
+    - "proxy"
