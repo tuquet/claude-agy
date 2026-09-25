@@ -401,6 +401,33 @@ param([Parameter(ValueFromRemainingArguments = $true)][string[]]$UserArgs)
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $AppDir = [System.IO.Path]::GetFullPath((Join-Path $ScriptDir ".."))
 
+$isUpdateCommand = ($UserArgs.Length -eq 1 -and ($UserArgs[0] -eq "update" -or $UserArgs[0] -eq "upgrade" -or $UserArgs[0] -eq "--update"))
+if ($isUpdateCommand) {
+    Write-Host "============================================================" -ForegroundColor Cyan
+    Write-Host " Updating Claude-Agy & Claude Code CLI..." -ForegroundColor Cyan
+    Write-Host "============================================================" -ForegroundColor Cyan
+
+    $isScoop = ($AppDir -like "*\scoop\apps\*")
+    if ($isScoop) {
+        Write-Host ">> Updating Scoop bucket and claude-agy package..." -ForegroundColor Cyan
+        try { & scoop update tuquet } catch {}
+        try { & scoop update claude-agy } catch {}
+    } else {
+        Write-Host ">> Updating Claude-Agy from GitHub..." -ForegroundColor Cyan
+        $env:TARGET_DIR = $AppDir
+        irm https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.ps1 | iex
+    }
+
+    Write-Host "`n>> Updating Claude Code CLI..." -ForegroundColor Cyan
+    & claude update
+
+    Write-Host "`n>> Re-synchronizing Antigravity OAuth token..." -ForegroundColor Cyan
+    & "$AppDir\scripts\sync-token.ps1" -AppDir $AppDir
+
+    Write-Host "`n[SUCCESS] Claude-Agy update completed!" -ForegroundColor Green
+    exit 0
+}
+
 $Port = 8318
 $AutoBypass = $true
 $DefaultModel = "claude-sonnet-4-6"

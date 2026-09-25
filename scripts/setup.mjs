@@ -470,7 +470,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import net from 'node:net';
-import { spawn } from 'node:child_process';
+import { spawn, execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -628,6 +628,42 @@ if (fs.existsSync(settingsPath)) {
       if (k.trim() === 'ANTIGRAVITY_TOKEN_PATH' || k.trim() === 'TOKEN_PATH') configTokenPath = val;
     }
   }
+}
+
+// 0. Handle self-update
+if (process.argv.length === 3 && (process.argv[2] === 'update' || process.argv[2] === 'upgrade' || process.argv[2] === '--update')) {
+  console.log('\\x1b[36m============================================================\\x1b[0m');
+  console.log('\\x1b[36m Updating Claude-Agy & Claude Code CLI...\\x1b[0m');
+  console.log('\\x1b[36m============================================================\\x1b[0m');
+
+  const isScoop = appDir.includes(path.join('scoop', 'apps'));
+  if (isScoop) {
+    console.log('>> Updating Scoop package...');
+    try {
+      execSync('scoop update tuquet && scoop update claude-agy', { stdio: 'inherit', shell: true });
+    } catch {}
+  } else {
+    console.log('>> Updating Claude-Agy from GitHub...');
+    try {
+      if (isWin) {
+        execSync('powershell -NoProfile -Command "irm https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.ps1 | iex"', { stdio: 'inherit' });
+      } else {
+        execSync('curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.sh | bash', { stdio: 'inherit' });
+      }
+    } catch {}
+  }
+
+  console.log('\\n>> Updating Claude Code CLI...');
+  try {
+    const claudeExe = isWin ? 'claude.cmd' : 'claude';
+    execSync(claudeExe + ' update', { stdio: 'inherit', shell: true });
+  } catch {}
+
+  console.log('\\n>> Re-synchronizing Antigravity token...');
+  syncToken(process.env.ANTIGRAVITY_TOKEN_PATH || null);
+
+  console.log('\\n\\x1b[32m[SUCCESS] Claude-Agy is fully up to date!\\x1b[0m');
+  process.exit(0);
 }
 
 // 3. Process CLI arguments

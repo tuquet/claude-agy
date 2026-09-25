@@ -56,7 +56,9 @@ scoop install claude-agy
 
 *To update anytime:*
 ```powershell
-scoop update claude-agy
+claude-agy update
+# Or via Scoop directly:
+scoop update tuquet; scoop update claude-agy
 ```
 
 ---
@@ -116,6 +118,9 @@ claude-agy --model claude-opus-4-6-thinking
 
 # Specify a custom token file directly
 claude-agy --token-path "C:\path\to\custom-token.json"
+
+# Update Claude-Agy & Claude Code CLI to latest
+claude-agy update
 ```
 
 ---
