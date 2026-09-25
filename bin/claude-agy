@@ -30,6 +30,20 @@ if [ "$1" = "update" ] || [ "$1" = "upgrade" ] || [ "$1" = "--update" ]; then
   exit 0
 fi
 
+if [ "$1" = "probe" ] || [ "$1" = "--probe" ]; then
+  AUTH_FILE="$APP_DIR/data/antigravity-auth.json"
+  VALID=false
+  EMAIL="none"
+  if [ -f "$AUTH_FILE" ]; then
+    VALID=true
+    EMAIL="$(node -e "try { const d=JSON.parse(require('fs').readFileSync('$AUTH_FILE','utf8')); console.log(d.email||'user@antigravity'); } catch { console.log('none'); }" 2>/dev/null || echo "none")"
+  fi
+  cat <<EOF
+{"protocol":"tuquet.agent.v1","name":"claude-agy","version":"7.3.17.1","engine":"claude-code","auth":{"valid":$VALID,"email":"$EMAIL","provider":"google-antigravity"},"capabilities":["probe","stdin_stream","tool_call_events","diff_extraction"],"models":["claude-sonnet-4-6","claude-opus-4-6-thinking","gemini-flash-high"],"proxy_ready":true}
+EOF
+  exit 0
+fi
+
 ENABLE_BYPASS=false
 [ "$AUTO_BYPASS_PERMISSIONS" = "true" ] && ENABLE_BYPASS=true
 

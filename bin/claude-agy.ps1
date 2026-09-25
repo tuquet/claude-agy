@@ -35,6 +35,44 @@ if ($isUpdateCommand) {
     exit 0
 }
 
+# 0.1 Handle discovery probe / handshake
+$isProbeCommand = ($UserArgs.Length -eq 1 -and ($UserArgs[0] -eq "probe" -or $UserArgs[0] -eq "--probe"))
+if ($isProbeCommand) {
+    $authFile = Join-Path $AppDir "data\antigravity-auth.json"
+    $hasToken = Test-Path $authFile
+    $email = "none"
+    $valid = $false
+    if ($hasToken) {
+        try {
+            $data = Get-Content $authFile -Raw | ConvertFrom-Json
+            if ($data.access_token -or $data.refresh_token) {
+                $valid = $true
+                $email = if ($data.email) { $data.email } else { "user@antigravity" }
+            }
+        } catch {}
+    }
+
+    $proxyBin = Join-Path $AppDir "bin\cli-proxy-api.exe"
+    $hasProxy = Test-Path $proxyBin
+
+    $manifest = [PSCustomObject]@{
+        protocol     = "tuquet.agent.v1"
+        name         = "claude-agy"
+        version      = "7.3.17.1"
+        engine       = "claude-code"
+        auth         = [PSCustomObject]@{
+            valid    = $valid
+            email    = $email
+            provider = "google-antigravity"
+        }
+        capabilities = @("probe", "stdin_stream", "tool_call_events", "diff_extraction")
+        models       = @("claude-sonnet-4-6", "claude-opus-4-6-thinking", "gemini-flash-high")
+        proxy_ready  = $hasProxy
+    }
+    $manifest | ConvertTo-Json -Compress
+    exit 0
+}
+
 $Port = 8318
 $AutoBypass = $true
 $DefaultModel = "claude-sonnet-4-6"
