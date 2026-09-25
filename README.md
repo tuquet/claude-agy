@@ -175,7 +175,6 @@ Claude-Agy automatically locates and syncs your Antigravity OAuth credentials us
 │   ├── sync-token.ps1        # Windows PowerShell token scanner
 │   ├── uninstall.ps1         # Windows uninstaller
 │   └── uninstall.sh          # Linux / macOS uninstaller
-├── package.json
 └── README.md
 ```
 
