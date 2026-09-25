@@ -205,13 +205,23 @@ export function resolveAntigravityToken(appDataDir, customTokenPath = null) {
   }
 }
 
+import { fileURLToPath } from 'node:url';
+
 // Standalone execution support
-const appDirArg = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(path.join(path.dirname(new URL(import.meta.url).pathname), '..'));
-const customPathArg = process.argv[3] || null;
-const targetDataDir = path.join(appDirArg, 'data');
-const result = resolveAntigravityToken(targetDataDir, customPathArg);
-if (result.success) {
-  console.log(`[OK] Synced Antigravity OAuth token (${result.email}) from ${result.source}`);
-} else {
-  console.log(`[INFO] ${result.error}`);
+const isDirectRun = process.argv[1] && (
+  fileURLToPath(import.meta.url) === path.resolve(process.argv[1]) ||
+  process.argv[1].endsWith('sync-token.mjs')
+);
+
+if (isDirectRun) {
+  const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+  const appDirArg = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(scriptDir, '..');
+  const customPathArg = process.argv[3] || null;
+  const targetDataDir = path.join(appDirArg, 'data');
+  const result = resolveAntigravityToken(targetDataDir, customPathArg);
+  if (result.success) {
+    console.log(`[OK] Synced Antigravity OAuth token (${result.email}) from ${result.source}`);
+  } else {
+    console.log(`[INFO] ${result.error}`);
+  }
 }

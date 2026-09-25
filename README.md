@@ -69,12 +69,12 @@ Requires Node.js 18+:
 
 ```bash
 # Run one-line installer
-curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/setup.mjs | node
+curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.mjs | node
 ```
 
 Or from local clone:
 ```bash
-node setup.mjs
+node scripts/setup.mjs
 ```
 
 ---
@@ -159,7 +159,6 @@ Claude-Agy automatically locates and syncs your Antigravity OAuth credentials us
 │   ├── claude-agy            # Linux / macOS Bash launcher
 │   ├── claude-agy.ps1        # Windows PowerShell launcher
 │   ├── claude-agy.cmd        # Windows CMD wrapper
-│   ├── claude-agy.mjs        # Universal Node.js launcher
 │   └── cli-proxy-api         # Native reverse proxy binary
 ├── config/
 │   ├── config.yaml           # Minimalist proxy configuration
@@ -172,9 +171,8 @@ Claude-Agy automatically locates and syncs your Antigravity OAuth credentials us
 │   ├── setup.mjs             # Universal Node.js setup orchestrator
 │   ├── setup.ps1             # Windows PowerShell setup orchestrator
 │   ├── setup.sh              # Linux / macOS setup orchestrator
-│   ├── sync-token.mjs        # Node.js token scanner
-│   ├── sync-token.ps1        # PowerShell token scanner
-│   ├── sync-token.py         # Python token scanner
+│   ├── sync-token.mjs        # Universal Node.js token scanner
+│   ├── sync-token.ps1        # Windows PowerShell token scanner
 │   ├── uninstall.ps1         # Windows uninstaller
 │   └── uninstall.sh          # Linux / macOS uninstaller
 ├── package.json
