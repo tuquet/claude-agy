@@ -640,7 +640,7 @@ if (process.argv.length === 3 && (process.argv[2] === 'update' || process.argv[2
   if (isScoop) {
     console.log('>> Updating Scoop package...');
     try {
-      execSync('scoop update tuquet && scoop update claude-agy', { stdio: 'inherit', shell: true });
+      execSync('scoop update && scoop update claude-agy', { stdio: 'inherit', shell: true });
     } catch {}
   } else {
     console.log('>> Updating Claude-Agy from GitHub...');
