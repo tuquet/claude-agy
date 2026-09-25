@@ -261,6 +261,20 @@ CUSTOM_TOKEN_PATH=""
 [ -f "$APP_DIR/config/settings.env" ] && source "$APP_DIR/config/settings.env"
 [ -n "$ANTIGRAVITY_TOKEN_PATH" ] && CUSTOM_TOKEN_PATH="$ANTIGRAVITY_TOKEN_PATH"
 
+if [ "$1" = "update" ] || [ "$1" = "upgrade" ] || [ "$1" = "--update" ]; then
+  echo "============================================================"
+  echo " Updating Claude-Agy & Claude Code CLI..."
+  echo "============================================================"
+  echo ">> Updating Claude-Agy from GitHub..."
+  curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.sh | bash
+  echo -e "\n>> Updating Claude Code CLI..."
+  claude update || true
+  echo -e "\n>> Re-synchronizing Antigravity token..."
+  python3 "$APP_DIR/scripts/sync-token.py" "$APP_DIR" >/dev/null 2>&1 || true
+  echo -e "\n>> [SUCCESS] Claude-Agy is fully up to date!"
+  exit 0
+fi
+
 ENABLE_BYPASS=false
 [ "$AUTO_BYPASS_PERMISSIONS" = "true" ] && ENABLE_BYPASS=true
 
