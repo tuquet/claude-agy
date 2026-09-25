@@ -42,13 +42,7 @@ else
     echo -e "${GREEN}  -> Claude Code CLI already available.${NC}"
 fi
 
-# 3. Check Python 3
-if ! command -v python3 >/dev/null 2>&1; then
-    echo -e "${RED}[ERROR] Python 3 is required for token synchronization.${NC}"
-    exit 1
-fi
-
-# 4. Create directory structure
+# 3. Create directory structure
 mkdir -p "$BIN_DIR" "$CONFIG_DIR" "$DATA_DIR" "$LOGS_DIR" "$SCRIPTS_DIR"
 
 # 5. Resolve and Deploy Claude-Agy components (bin, scripts, config)
@@ -82,7 +76,7 @@ else
 fi
 
 chmod +x "$BIN_DIR/claude-agy" 2>/dev/null || true
-chmod +x "$SCRIPTS_DIR/sync-token.py" 2>/dev/null || true
+chmod +x "$SCRIPTS_DIR/sync-token.mjs" 2>/dev/null || true
 chmod +x "$SCRIPTS_DIR/uninstall.sh" 2>/dev/null || true
 cp -f "$SCRIPTS_DIR/uninstall.sh" "$INSTALL_DIR/uninstall.sh"
 chmod +x "$INSTALL_DIR/uninstall.sh" 2>/dev/null || true
@@ -141,7 +135,7 @@ fi
 
 # 8. Initial token synchronization
 echo -e "\n${CYAN}[6/6] Synchronizing Antigravity OAuth token...${NC}"
-python3 "$SCRIPTS_DIR/sync-token.py" "$INSTALL_DIR" "${ANTIGRAVITY_TOKEN_PATH:-}"
+node "$SCRIPTS_DIR/sync-token.mjs" "$INSTALL_DIR" "${ANTIGRAVITY_TOKEN_PATH:-}"
 
 echo -e "\n${GREEN}============================================================${NC}"
 echo -e "${GREEN} [SUCCESS] Claude-Agy installation completed!${NC}"

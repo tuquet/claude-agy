@@ -25,7 +25,7 @@ if [ "$1" = "update" ] || [ "$1" = "upgrade" ] || [ "$1" = "--update" ]; then
   echo -e "\n>> Updating Claude Code CLI..."
   claude update || true
   echo -e "\n>> Re-synchronizing Antigravity token..."
-  python3 "$APP_DIR/scripts/sync-token.py" "$APP_DIR" >/dev/null 2>&1 || true
+  node "$APP_DIR/scripts/sync-token.mjs" "$APP_DIR" >/dev/null 2>&1 || true
   echo -e "\n>> [SUCCESS] Claude-Agy is fully up to date!"
   exit 0
 fi
@@ -54,7 +54,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 mkdir -p "$APP_DIR/logs"
-python3 "$APP_DIR/scripts/sync-token.py" "$APP_DIR" "$CUSTOM_TOKEN_PATH" >/dev/null 2>&1 || true
+node "$APP_DIR/scripts/sync-token.mjs" "$APP_DIR" "$CUSTOM_TOKEN_PATH" >/dev/null 2>&1 || true
 
 if [ "$MODEL_SPECIFIED" = false ] && [ -n "$DEFAULT_MODEL" ]; then
   ARGS=("--model" "$DEFAULT_MODEL" "${ARGS[@]}")

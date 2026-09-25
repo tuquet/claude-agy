@@ -129,8 +129,14 @@ if (localRoot) {
 if (!isWin) {
   try {
     fs.chmodSync(path.join(binDir, 'claude-agy'), 0o755);
-    fs.chmodSync(path.join(scriptsDir, 'sync-token.py'), 0o755);
+    fs.chmodSync(path.join(scriptsDir, 'sync-token.mjs'), 0o755);
     fs.chmodSync(path.join(scriptsDir, 'uninstall.sh'), 0o755);
+    fs.copyFileSync(path.join(scriptsDir, 'uninstall.sh'), path.join(targetDir, 'uninstall.sh'));
+    fs.chmodSync(path.join(targetDir, 'uninstall.sh'), 0o755);
+  } catch {}
+} else {
+  try {
+    fs.copyFileSync(path.join(scriptsDir, 'uninstall.ps1'), path.join(targetDir, 'uninstall.ps1'));
   } catch {}
 }
 
