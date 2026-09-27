@@ -66,7 +66,7 @@ if [ -n "$LOCAL_ROOT" ]; then
 else
     echo "  -> Fetching latest components from GitHub repository..."
     TMP_DIR="$(mktemp -d)"
-    curl -fsSL https://github.com/tuquet/claude-agy/archive/refs/heads/main.tar.gz | tar -xz -C "$TMP_DIR"
+    curl -fsSL https://github.com/tuquet/tuquet-claude-agy/archive/refs/heads/main.tar.gz | tar -xz -C "$TMP_DIR"
     EXTRACTED_DIR="$TMP_DIR/claude-agy-main"
     cp -rf "$EXTRACTED_DIR/bin/"* "$BIN_DIR/"
     cp -rf "$EXTRACTED_DIR/scripts/"* "$SCRIPTS_DIR/"

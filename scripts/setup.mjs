@@ -90,7 +90,7 @@ if (localRoot) {
   console.log(`  \x1b[32m-> Deployed components from local source (${localRoot}).\x1b[0m`);
 } else {
   console.log('  -> Fetching latest components from GitHub repository...');
-  const archiveUrl = 'https://github.com/tuquet/claude-agy/archive/refs/heads/main.zip';
+  const archiveUrl = 'https://github.com/tuquet/tuquet-claude-agy/archive/refs/heads/main.zip';
   const tempZip = path.join(os.tmpdir(), `claude-agy-${Date.now()}.zip`);
   const tempExtract = path.join(os.tmpdir(), `claude-agy-extract-${Date.now()}`);
   try {

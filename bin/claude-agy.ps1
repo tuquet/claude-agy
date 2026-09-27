@@ -22,7 +22,7 @@ if ($isUpdateCommand) {
     } else {
         Write-Host ">> Updating Claude-Agy from GitHub..." -ForegroundColor Cyan
         $env:TARGET_DIR = $AppDir
-        irm https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.ps1 | iex
+        irm https://raw.githubusercontent.com/tuquet/tuquet-claude-agy/main/scripts/setup.ps1 | iex
     }
 
     Write-Host "`n>> Updating Claude Code CLI..." -ForegroundColor Cyan
