@@ -1,12 +1,18 @@
-# 🚀 Claude-Agy (`claude-agy`)
+<div align="center">
+  <img src="./assets/logo.svg" width="76" height="76" alt="Claude-Agy Logo" />
+  <h1>Claude-Agy</h1>
+  <p><strong>Anthropic Claude Code CLI powered by Google Antigravity Enterprise Quota</strong></p>
 
-> Run Anthropic's **Claude Code CLI** powered by **Google Antigravity OAuth** quotas with zero API token cost, on-demand proxy lifecycle management, and dynamic model discovery.
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](#-installation)
-[![Scoop](https://img.shields.io/badge/Scoop-Available-brightgreen.svg)](#1-windows-via-scoop-recommended)
+  <p>
+    <a href="https://github.com/tuquet/scoop-bucket"><img src="https://img.shields.io/badge/Scoop-Available-brightgreen.svg" alt="Scoop" /></a>
+    <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg" alt="Platform" />
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" /></a>
+  </p>
+</div>
 
 ---
+
+> Run Anthropic's **Claude Code CLI** powered by **Google Antigravity OAuth** quotas with zero API token cost, on-demand proxy lifecycle management, and dynamic model discovery.
 
 ## 🏗️ Architecture & Execution Flow
 
@@ -199,6 +205,32 @@ scoop uninstall claude-agy
 
 ---
 
+## 🌐 Ecosystem
+
+Part of the **Automation & Agent Ecosystem**:
+
+- [Automa](https://github.com/tuquet/automa) — Native Chrome/Edge Desktop UI Automation Browser.
+- [Runner](https://github.com/tuquet/runner) — High-Performance Distributed Process Supervision Engine in Rust.
+- [Browser](https://github.com/tuquet/browser) — High-Performance Headless Web Scraping & Stealth Automation Core.
+- [Cloud](https://github.com/tuquet/cloud) — Enterprise Orchestration & Real-time Task Control Plane.
+- [CLI](https://github.com/tuquet/cli) — Developer Ergonomic CLI & Unified Command Center.
+- [Lib](https://github.com/tuquet/lib) — Monorepo for Shared Enterprise UI & Utilities (`vue-ui`, `vue-table`, `md-export`, `extension-runner`, `lunar`).
+- [Scoop Bucket](https://github.com/tuquet/scoop-bucket) — Official Windows Scoop Distribution Channel.
+
+---
+
 ## 📜 License
 
 This project is licensed under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+  <samp>
+    <a href="https://tuquet.github.io">Portfolio</a> •
+    <a href="https://tuquet.github.io/cv">CV &amp; Resume</a> •
+    <a href="https://tuquet.github.io/automa">Automa Studio</a> •
+    <a href="https://tuquet.github.io/lib">Component Lab</a> •
+    <a href="https://github.com/tuquet/scoop-bucket">Scoop Bucket</a>
+  </samp>
+</div>
