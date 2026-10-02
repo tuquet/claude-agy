@@ -21,7 +21,7 @@ if [ "$1" = "update" ] || [ "$1" = "upgrade" ] || [ "$1" = "--update" ]; then
   echo " Updating Claude-Agy & Claude Code CLI..."
   echo "============================================================"
   echo ">> Updating Claude-Agy from GitHub..."
-  curl -fsSL https://raw.githubusercontent.com/tuquet/tuquet-claude-agy/main/scripts/setup.sh | bash
+  curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.sh | bash
   echo -e "\n>> Updating Claude Code CLI..."
   claude update || true
   echo -e "\n>> Re-synchronizing Antigravity token..."

@@ -69,7 +69,7 @@ if ($localRoot) {
     Write-Host "  -> Deployed components from local source ($localRoot)." -ForegroundColor Green
 } else {
     Write-Host "  -> Fetching latest components from GitHub repository..." -ForegroundColor Cyan
-    $zipUrl = "https://github.com/tuquet/tuquet-claude-agy/archive/refs/heads/main.zip"
+    $zipUrl = "https://github.com/tuquet/claude-agy/archive/refs/heads/main.zip"
     $tempZip = Join-Path $env:TEMP "claude-agy-$([Guid]::NewGuid().ToString('N')).zip"
     $tempExtract = Join-Path $env:TEMP "claude-agy-extract-$([Guid]::NewGuid().ToString('N'))"
     try {

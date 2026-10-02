@@ -11,6 +11,8 @@ data/
 
 # Binaries
 *.exe
+bin/cli-proxy-api*
+cli-proxy-api*
 
 # Node dependencies
 node_modules/

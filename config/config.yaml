@@ -1,6 +1,6 @@
 host: "127.0.0.1"
 port: 8318
-auth-dir: ""
+auth-dir: "/root/tuquet/claude-agy/data"
 api-keys:
   - "sk-personal-claude-token"
 remote-management:

@@ -48,7 +48,7 @@ If you use [Scoop](https://scoop.sh):
 
 ```powershell
 # Add Tuquet Scoop Bucket
-scoop bucket add tuquet https://github.com/tuquet/tuquet-scoop-bucket
+scoop bucket add tuquet https://github.com/tuquet/scoop-bucket
 
 # Install Claude-Agy
 scoop install claude-agy
@@ -69,7 +69,7 @@ Requires Node.js 18+:
 
 ```bash
 # Run one-line installer
-curl -fsSL https://raw.githubusercontent.com/tuquet/tuquet-claude-agy/main/scripts/setup.mjs | node
+curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.mjs | node
 ```
 
 Or from local clone:
@@ -84,7 +84,7 @@ node scripts/setup.mjs
 Open PowerShell and run:
 
 ```powershell
-irm https://raw.githubusercontent.com/tuquet/tuquet-claude-agy/main/scripts/setup.ps1 | iex
+irm https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.ps1 | iex
 ```
 
 ---
@@ -94,7 +94,7 @@ irm https://raw.githubusercontent.com/tuquet/tuquet-claude-agy/main/scripts/setu
 Open terminal and run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/tuquet/tuquet-claude-agy/main/scripts/setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.sh | bash
 ```
 
 ---
