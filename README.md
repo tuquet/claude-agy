@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/logo.svg" width="76" height="76" alt="Claude-Agy Logo" />
+  <img src="https://tuquet.github.io/icons/claude-agy.svg" width="76" height="76" alt="Claude-Agy Logo" />
   <h1>Claude-Agy</h1>
   <p><strong>Anthropic Claude Code CLI powered by Google Antigravity Enterprise Quota</strong></p>
 
