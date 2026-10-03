@@ -60,9 +60,9 @@ for (const dir of [targetDir, binDir, configDir, dataDir, logsDir, scriptsDir]) 
 // 4. Resolve and Deploy Claude-Agy Components (bin, scripts, config)
 console.log('\n\x1b[36m[3/6] Deploying Claude-Agy components...\x1b[0m');
 let localRoot = null;
-if (fs.existsSync(path.join(currentDir, '..', 'bin', 'claude-agy.ps1'))) {
+if (fs.existsSync(path.join(currentDir, '..', 'bin', 'claude-agy'))) {
   localRoot = path.resolve(path.join(currentDir, '..'));
-} else if (fs.existsSync(path.join(currentDir, 'bin', 'claude-agy.ps1'))) {
+} else if (fs.existsSync(path.join(currentDir, 'bin', 'claude-agy'))) {
   localRoot = path.resolve(currentDir);
 }
 

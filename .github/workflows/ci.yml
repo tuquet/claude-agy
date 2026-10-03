@@ -9,35 +9,31 @@ on:
 
 jobs:
   validate-scripts:
-    name: Validate Scripts & Strict ASCII
-    runs-on: windows-latest
+    name: Validate Scripts Syntax
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate PowerShell Strict ASCII
-        shell: pwsh
-        run: |
-          $psFiles = Get-ChildItem -Recurse -Filter "*.ps1"
-          $hasError = $false
-          foreach ($file in $psFiles) {
-            $lines = Get-Content $file.FullName
-            for ($i = 0; $i -lt $lines.Length; $i++) {
-              if ($lines[$i] -match '[^\x00-\x7F]') {
-                Write-Error "[FAIL] $($file.Name):$($i+1) contains non-ASCII characters!"
-                $hasError = $true
-              }
-            }
-          }
-          if ($hasError) { exit 1 }
-          Write-Host "[OK] All PowerShell scripts are 100% strict ASCII." -ForegroundColor Green
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Validate Node.js Syntax
-        shell: pwsh
         run: |
-          node -c setup.mjs
-          node -c scripts/setup.mjs
-          Write-Host "[OK] Node.js scripts syntax valid." -ForegroundColor Green
+          for file in scripts/*.mjs; do
+            echo "Checking $file..."
+            node -c "$file"
+          done
+          echo "All Node.js scripts syntax valid."
+
+      - name: Validate Shell Scripts Syntax
+        run: |
+          bash -n bin/claude-agy
+          bash -n install.sh
+          bash -n uninstall.sh
+          echo "All Shell scripts syntax valid."
 
   notify:
     name: Notify Telegram

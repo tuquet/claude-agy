@@ -5,7 +5,6 @@
 
   <p>
     <a href="https://github.com/tuquet/scoop-bucket"><img src="https://img.shields.io/badge/Scoop-Available-brightgreen.svg" alt="Scoop" /></a>
-    <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg" alt="Platform" />
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" /></a>
   </p>
 </div>
@@ -39,20 +38,18 @@ flowchart TD
 
 - **Zero API Token Cost**: Utilizes your existing Google Antigravity OAuth quota directly.
 - **On-Demand Proxy Lifecycle**: Starts the reverse proxy automatically on port `8318` when you run `claude-agy`, and terminates the process when you exit (0 MB RAM overhead when idle).
-- **Dynamic Multi-Source Token Scanner**: Automatically discovers and validates OAuth tokens across `~/.gemini/` subdirectories, Antigravity IDE (`jetski-standalone-oauth-token`, `%APPDATA%\Antigravity*`), and OAuth credentials (`oauth_creds.json`). Supports custom paths via CLI flag (`--token-path`), env var (`ANTIGRAVITY_TOKEN_PATH`), or `config/settings.env`.
+- **Dynamic Multi-Source Token Scanner**: Automatically discovers and validates OAuth tokens across `~/.gemini/` subdirectories, Antigravity IDE (`jetski-standalone-oauth-token`), and OAuth credentials (`oauth_creds.json`). Supports custom paths via CLI flag (`--token-path`), env var (`ANTIGRAVITY_TOKEN_PATH`), or `config/settings.env`.
 - **Dynamic Model Discovery (`/model`)**: Query and switch models on the fly (Sonnet 3.7 / 4.6, Opus Thinking, Gemini 3.8 Flash High) without maintaining static alias tables.
 - **Root & Sandbox Permission Bypass**: Seamless headless execution (`IS_SANDBOX=1` and automated `.claude.json` trust acceptance) for uninterrupted developer workflows.
-- **Strict ASCII & Cross-Platform Invariance**: Pure PowerShell 5.1/7+, Node.js, and Bash implementations with zero Windows-1252 ANSI encoding pitfalls.
+- **Universal Node.js Runtime**: Single cross-platform installer, token scanner, and lifecycle manager with zero operating system fragmentation.
 
 ---
 
 ## 📦 Installation
 
-### 1. Windows via Scoop (Recommended)
+### 1. Package Manager (Scoop)
 
-If you use [Scoop](https://scoop.sh):
-
-```powershell
+```console
 # Add Tuquet Scoop Bucket
 scoop bucket add tuquet https://github.com/tuquet/scoop-bucket
 
@@ -61,7 +58,7 @@ scoop install claude-agy
 ```
 
 *To update anytime:*
-```powershell
+```console
 claude-agy update
 # Or via Scoop directly:
 scoop update tuquet; scoop update claude-agy
@@ -69,38 +66,17 @@ scoop update tuquet; scoop update claude-agy
 
 ---
 
-### 2. Universal Node.js Installer (Windows, macOS, Linux)
+### 2. Universal Installer (Node.js 18+)
 
-Requires Node.js 18+:
+Run the one-line universal installer:
 
-```bash
-# Run one-line installer
+```console
 curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.mjs | node
 ```
 
-Or from local clone:
-```bash
+Or from a local clone:
+```console
 node scripts/setup.mjs
-```
-
----
-
-### 3. Windows Direct (PowerShell)
-
-Open PowerShell and run:
-
-```powershell
-irm https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.ps1 | iex
-```
-
----
-
-### 4. Linux / macOS / WSL (Bash)
-
-Open terminal and run:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setup.sh | bash
 ```
 
 ---
@@ -109,7 +85,7 @@ curl -fsSL https://raw.githubusercontent.com/tuquet/claude-agy/main/scripts/setu
 
 Once installed, use the global command:
 
-```powershell
+```console
 # Launch interactive chat
 claude-agy
 
@@ -123,7 +99,7 @@ claude-agy -p "Write an async HTTP client in Rust"
 claude-agy --model claude-opus-4-6-thinking
 
 # Specify a custom token file directly
-claude-agy --token-path "C:\path\to\custom-token.json"
+claude-agy --token-path "/path/to/custom-token.json"
 
 # Update Claude-Agy & Claude Code CLI to latest
 claude-agy update
@@ -133,15 +109,15 @@ claude-agy update
 
 ## 🔑 Token Discovery & Configuration
 
-Claude-Agy automatically locates and syncs your Antigravity OAuth credentials using a prioritized 5-tier discovery hierarchy:
+Claude-Agy automatically locates and syncs your Antigravity OAuth credentials using a prioritized discovery hierarchy:
 
 1. **CLI Argument (`--token-path` / `-t`)**:
-   ```bash
+   ```console
    claude-agy --token-path /custom/path/oauth_token.json
    ```
 2. **Environment Variable (`ANTIGRAVITY_TOKEN_PATH` or `GEMINI_TOKEN_PATH`)**:
-   ```powershell
-   $env:ANTIGRAVITY_TOKEN_PATH = "C:\Tokens\my-antigravity-token.json"
+   ```console
+   export ANTIGRAVITY_TOKEN_PATH="/custom/path/oauth_token.json"
    claude-agy
    ```
 3. **Configuration File (`config/settings.env`)**:
@@ -152,7 +128,6 @@ Claude-Agy automatically locates and syncs your Antigravity OAuth credentials us
    - `~/.gemini/jetski-standalone-oauth-token` (Antigravity IDE)
    - `~/.gemini/oauth_creds.json`
    - `~/.gemini/antigravity-cli/antigravity-oauth-token`
-   - `%APPDATA%\Antigravity\oauth_creds.json` / `~/.config/Antigravity/oauth_creds.json`
 5. **Dynamic Directory Scanner**:
    - Automatically searches subdirectories of `~/.gemini` (skipping heavy cache, brain, and history directories) and system application data folders for valid OAuth token JSON payloads.
 
@@ -161,26 +136,22 @@ Claude-Agy automatically locates and syncs your Antigravity OAuth credentials us
 ## 📁 Directory Structure
 
 ```text
+/root/claude-agy/
 ├── bin/
-│   ├── claude-agy            # Linux / macOS Bash launcher
-│   ├── claude-agy.ps1        # Windows PowerShell launcher
-│   ├── claude-agy.cmd        # Windows CMD wrapper
+│   ├── claude-agy            # Universal CLI entrypoint & proxy lifecycle supervisor
 │   └── cli-proxy-api         # Native reverse proxy binary
 ├── config/
-│   ├── config.yaml           # Minimalist proxy configuration
+│   ├── config.yaml           # Proxy routing configuration
 │   └── settings.env          # Environment settings (port, model, auto-bypass)
 ├── data/
 │   └── antigravity-auth.json # Synced OAuth credentials
-├── logs/
-│   └── proxy.log             # Proxy logs
+├── logs/                     # Runtime logs (ignored in VCS)
 ├── scripts/
-│   ├── setup.mjs             # Universal Node.js setup orchestrator
-│   ├── setup.ps1             # Windows PowerShell setup orchestrator
-│   ├── setup.sh              # Linux / macOS setup orchestrator
-│   ├── sync-token.mjs        # Universal Node.js token scanner
-│   ├── sync-token.ps1        # Windows PowerShell token scanner
-│   ├── uninstall.ps1         # Windows uninstaller
-│   └── uninstall.sh          # Linux / macOS uninstaller
+│   ├── setup.mjs             # Universal Node.js installer
+│   ├── sync-token.mjs        # Universal Node.js token scanner & synchronizer
+│   └── uninstall.mjs         # Universal Node.js uninstaller
+├── install.sh                # Standard local installer wrapper
+├── uninstall.sh              # Standard local uninstaller wrapper
 └── README.md
 ```
 
@@ -188,19 +159,16 @@ Claude-Agy automatically locates and syncs your Antigravity OAuth credentials us
 
 ## 🗑️ Uninstallation
 
-### Windows (Scoop)
-```powershell
+Via package manager:
+```console
 scoop uninstall claude-agy
 ```
 
-### Windows (Direct)
-```powershell
-& "$env:USERPROFILE\claude-agy\uninstall.ps1"
-```
-
-### Linux / macOS
-```bash
-~/claude-agy/uninstall.sh
+Via universal script:
+```console
+node ~/claude-agy/scripts/uninstall.mjs
+# Or to clean up all configuration and cache:
+node ~/claude-agy/scripts/uninstall.mjs --all
 ```
 
 ---
@@ -209,13 +177,13 @@ scoop uninstall claude-agy
 
 Part of the **Automation & Agent Ecosystem**:
 
-- [Automa](https://github.com/tuquet/automa) — Native Chrome/Edge Desktop UI Automation Browser.
-- [Runner](https://github.com/tuquet/runner) — High-Performance Distributed Process Supervision Engine in Rust.
-- [Browser](https://github.com/tuquet/browser) — High-Performance Headless Web Scraping & Stealth Automation Core.
-- [Cloud](https://github.com/tuquet/cloud) — Enterprise Orchestration & Real-time Task Control Plane.
-- [CLI](https://github.com/tuquet/cli) — Developer Ergonomic CLI & Unified Command Center.
-- [Lib](https://github.com/tuquet/lib) — Monorepo for Shared Enterprise UI & Utilities (`vue-ui`, `vue-table`, `md-export`, `extension-runner`, `lunar`).
-- [Scoop Bucket](https://github.com/tuquet/scoop-bucket) — Official Windows Scoop Distribution Channel.
+- [Automa](https://github.com/tuquet/automa) — Next-generation browser automation engine & Web Studio.
+- [Runner](https://github.com/tuquet/runner) — Universal distributed process supervision engine in Rust.
+- [Browser](https://github.com/tuquet/browser) — High-performance isolated Chromium sandbox & stealth automation core.
+- [Cloud](https://github.com/tuquet/cloud) — Enterprise cloud orchestration & real-time telemetry control plane.
+- [CLI](https://github.com/tuquet/cli) — Developer ergonomic master CLI, interactive REPL & native MCP server.
+- [Lib](https://github.com/tuquet/lib) — Monorepo for shared enterprise UI & utilities (`vue-ui`, `vue-table`, `md-export`, `extension-runner`, `lunar`).
+- [Scoop Bucket](https://github.com/tuquet/scoop-bucket) — Official Scoop distribution channel for Tuquet software.
 
 ---
 

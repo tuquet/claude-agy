@@ -218,9 +218,8 @@ fi
 
 # 7. Đồng bộ token OAuth
 log_info "7. Đồng bộ Antigravity OAuth Token..."
-if [ -f "$SCRIPTS_DIR/sync-token.py" ]; then
-    chmod +x "$SCRIPTS_DIR/sync-token.py"
-    python3 "$SCRIPTS_DIR/sync-token.py" "$APP_DIR"
+if [ -f "$SCRIPTS_DIR/sync-token.mjs" ]; then
+    node "$SCRIPTS_DIR/sync-token.mjs" "$APP_DIR"
 fi
 
 # 8. Cấp quyền launcher và tạo Symlink toàn hệ thống
