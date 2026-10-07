@@ -1,0 +1,59 @@
+name: CI (Script Syntax Validation)
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.vscode/**'
+      - 'LICENSE'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.vscode/**'
+      - 'LICENSE'
+  workflow_dispatch:
+
+jobs:
+  validate-scripts:
+    name: Validate Scripts Syntax
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate Node.js Syntax
+        run: |
+          for file in scripts/*.mjs; do
+            echo "Checking $file..."
+            node -c "$file"
+          done
+          echo "All Node.js scripts syntax valid."
+
+      - name: Validate Shell Scripts Syntax
+        run: |
+          bash -n bin/claude-agy
+          bash -n install.sh
+          bash -n uninstall.sh
+          echo "All Shell scripts syntax valid."
+
+  notify:
+    name: Notify Telegram
+    needs: [validate-scripts]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram Notification
+        uses: tuquet/bot@main
+        with:
+          bot-token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          chat-id: ${{ secrets.TELEGRAM_CHAT_ID }}
+          status: ${{ needs.validate-scripts.result }}
