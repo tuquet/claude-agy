@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://tuquet.github.io/icons/claude-agy.svg" width="76" height="76" alt="Claude-Agy Logo" />
+  <img src="https://tuquet.com/icons/claude-agy.svg" width="76" height="76" alt="Claude-Agy Logo" />
   <h1>Claude-Agy</h1>
   <p><strong>Anthropic Claude Code CLI powered by Google Antigravity Enterprise Quota</strong></p>
 
@@ -201,10 +201,10 @@ This project is licensed under the [MIT License](LICENSE).
 
 <div align="center">
   <samp>
-    <a href="https://tuquet.github.io">Portfolio</a> •
-    <a href="https://tuquet.github.io/cv">CV &amp; Resume</a> •
-    <a href="https://tuquet.github.io/automa">Automa Studio</a> •
-    <a href="https://tuquet.github.io/lib">Component Lab</a> •
+    <a href="https://tuquet.com">Portfolio</a> •
+    <a href="https://tuquet.com/cv">CV &amp; Resume</a> •
+    <a href="https://specter.tuquet.com/automa/">Automa Studio</a> •
+    <a href="https://storybook.tuquet.com/">Component Lab</a> •
     <a href="https://github.com/tuquet/scoop-bucket">Scoop Bucket</a>
   </samp>
 </div>
