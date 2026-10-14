@@ -4,8 +4,7 @@
   <p><strong>Anthropic Claude Code CLI powered by Google Antigravity Enterprise Quota</strong></p>
 
   <p>
-    <a href="https://github.com/tuquet/scoop-bucket"><img src="https://img.shields.io/badge/Scoop-Available-brightgreen.svg" alt="Scoop" /></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" /></a>
+        <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License" /></a>
   </p>
 </div>
 
@@ -45,28 +44,7 @@ flowchart TD
 
 ---
 
-## 📦 Installation
-
-### 1. Package Manager (Scoop)
-
-```console
-# Add Tuquet Scoop Bucket
-scoop bucket add tuquet https://github.com/tuquet/scoop-bucket
-
-# Install Claude-Agy
-scoop install claude-agy
-```
-
-*To update anytime:*
-```console
-claude-agy update
-# Or via Scoop directly:
-scoop update tuquet; scoop update claude-agy
-```
-
----
-
-### 2. Universal Installer (Node.js 18+)
+## 📦 Installation (Node.js 18+)
 
 Run the one-line universal installer:
 
@@ -189,7 +167,6 @@ Part of the **Automation & Agent Ecosystem**:
 - [Cloud](https://github.com/tuquet/cloud) — Enterprise cloud orchestration & real-time telemetry control plane.
 - [CLI](https://github.com/tuquet/cli) — Developer ergonomic master CLI, interactive REPL & native MCP server.
 - [Lib](https://github.com/tuquet/lib) — Monorepo for shared enterprise UI & utilities (`vue-ui`, `vue-table`, `md-export`, `extension-runner`, `lunar`).
-- [Scoop Bucket](https://github.com/tuquet/scoop-bucket) — Official Scoop distribution channel for Tuquet software.
 
 ---
 
@@ -205,6 +182,6 @@ This project is licensed under the [MIT License](LICENSE).
     <a href="https://tuquet.com/cv">CV &amp; Resume</a> •
     <a href="https://docs.tuquet.com/en/specter/automa/">Automa Studio</a> •
     <a href="https://storybook.tuquet.com/">Component Lab</a> •
-    <a href="https://github.com/tuquet/scoop-bucket">Scoop Bucket</a>
+    <a href="https://docs.tuquet.com">Documentation Hub</a>
   </samp>
 </div>
